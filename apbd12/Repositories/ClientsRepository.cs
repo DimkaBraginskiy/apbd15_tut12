@@ -29,4 +29,10 @@ public class ClientsRepository : IClientsRepository
         _context.Clients.Remove(client);
         await _context.SaveChangesAsync(token);
     }
+    
+    public async Task<Client?> GetClientByPeselAsync(CancellationToken token, string pesel)
+    {
+        return await _context.Clients
+            .FirstOrDefaultAsync(c => c.Pesel == pesel, token);
+    }
 }

@@ -29,4 +29,34 @@ public class TripsRepository : ITripsRepository
         
         return (trips, totalCount);
     }
+    
+    public async Task<bool> ClientExistsByPeselAsync(CancellationToken token, string pesel)
+    {
+        return await _context.Clients.AnyAsync(c => c.Pesel == pesel, token);
+    }
+    
+    public async Task<bool> IsClientAlreadyInTripAsync(CancellationToken token, string pesel, int idTrip)
+    {
+        return await _context.ClientTrips
+            .Include(ct => ct.IdClientNavigation)
+            .AnyAsync(ct => ct.IdTrip == idTrip && ct.IdClientNavigation.Pesel == pesel, token);
+    }
+
+    
+    public async Task<Trip?> GetTripByIdAsync(CancellationToken token, int idTrip)
+    {
+        return await _context.Trips.FirstOrDefaultAsync(t => t.IdTrip == idTrip, token);
+    }
+
+    public async Task AddClieentAsync(CancellationToken token, Client client)
+    {
+        _context.Clients.Add(client);
+        await _context.SaveChangesAsync(token);
+    }
+
+    public async Task AddClientTripAsync(CancellationToken token, ClientTrip clientTrip)
+    {
+        _context.ClientTrips.Add(clientTrip);
+        await _context.SaveChangesAsync(token);
+    }
 }
