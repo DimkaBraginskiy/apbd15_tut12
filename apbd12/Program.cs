@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddScoped<ITripsService, TripsService>();
 builder.Services.AddScoped<ITripsRepository, TripsRepository>();
+builder.Services.AddScoped<IClientsRepository, ClientsRepository>();
+builder.Services.AddScoped<IClientsService, ClientsService>();
 
 
 builder.Services.AddDbContext<TripContext>(options => 
@@ -21,7 +23,7 @@ builder.Services.AddDbContext<TripContext>(options =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 

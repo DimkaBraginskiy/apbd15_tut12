@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 
 namespace apbd12.Controllers;
-[Controller]
+[ApiController]
 [Route("api/{controller}")]
 public class TripsController : ControllerBase
 {
