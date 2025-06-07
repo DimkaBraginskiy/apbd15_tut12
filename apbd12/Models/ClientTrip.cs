@@ -9,9 +9,9 @@ public partial class ClientTrip
 
     public int IdTrip { get; set; }
 
-    public int RegisteredAt { get; set; }
+    public DateTime RegisteredAt { get; set; }
 
-    public int? PaymentDate { get; set; }
+    public DateTime? PaymentDate { get; set; }
 
     public virtual Client IdClientNavigation { get; set; } = null!;
 

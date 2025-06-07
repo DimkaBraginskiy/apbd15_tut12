@@ -5,13 +5,13 @@ using apbd12.Models;
 
 namespace apbd12.Data;
 
-public partial class ApbdContext : DbContext
+public partial class TripContext : DbContext
 {
-    public ApbdContext()
+    public TripContext()
     {
     }
 
-    public ApbdContext(DbContextOptions<ApbdContext> options)
+    public TripContext(DbContextOptions<TripContext> options)
         : base(options)
     {
     }
@@ -31,7 +31,7 @@ public partial class ApbdContext : DbContext
     {
         modelBuilder.Entity<Client>(entity =>
         {
-            entity.HasKey(e => e.IdClient).HasName("PK__Client__C1961B33130AC90A");
+            entity.HasKey(e => e.IdClient).HasName("Client_pk");
 
             entity.ToTable("Client");
 
@@ -44,24 +44,27 @@ public partial class ApbdContext : DbContext
 
         modelBuilder.Entity<ClientTrip>(entity =>
         {
-            entity.HasKey(e => new { e.IdClient, e.IdTrip }).HasName("PK__Client_T__C823521EBAC2D536");
+            entity.HasKey(e => new { e.IdClient, e.IdTrip }).HasName("Client_Trip_pk");
 
             entity.ToTable("Client_Trip");
+
+            entity.Property(e => e.PaymentDate).HasColumnType("datetime");
+            entity.Property(e => e.RegisteredAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.IdClientNavigation).WithMany(p => p.ClientTrips)
                 .HasForeignKey(d => d.IdClient)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Client_Tr__IdCli__534D60F1");
+                .HasConstraintName("Table_5_Client");
 
             entity.HasOne(d => d.IdTripNavigation).WithMany(p => p.ClientTrips)
                 .HasForeignKey(d => d.IdTrip)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Client_Tr__IdTri__5441852A");
+                .HasConstraintName("Table_5_Trip");
         });
 
         modelBuilder.Entity<Country>(entity =>
         {
-            entity.HasKey(e => e.IdCountry).HasName("PK__Country__F99F104DCCFABF70");
+            entity.HasKey(e => e.IdCountry).HasName("Country_pk");
 
             entity.ToTable("Country");
 
@@ -73,21 +76,21 @@ public partial class ApbdContext : DbContext
                     r => r.HasOne<Trip>().WithMany()
                         .HasForeignKey("IdTrip")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Country_T__IdTri__5070F446"),
+                        .HasConstraintName("Country_Trip_Trip"),
                     l => l.HasOne<Country>().WithMany()
                         .HasForeignKey("IdCountry")
                         .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("FK__Country_T__IdCou__4F7CD00D"),
+                        .HasConstraintName("Country_Trip_Country"),
                     j =>
                     {
-                        j.HasKey("IdCountry", "IdTrip").HasName("PK__Country___F02A5960DD5447BD");
+                        j.HasKey("IdCountry", "IdTrip").HasName("Country_Trip_pk");
                         j.ToTable("Country_Trip");
                     });
         });
 
         modelBuilder.Entity<Trip>(entity =>
         {
-            entity.HasKey(e => e.IdTrip).HasName("PK__Trip__9B5492D19EEDCDAB");
+            entity.HasKey(e => e.IdTrip).HasName("Trip_pk");
 
             entity.ToTable("Trip");
 

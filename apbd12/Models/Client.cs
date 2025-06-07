@@ -13,9 +13,9 @@ public partial class Client
 
     public string Email { get; set; } = null!;
 
-    public string? Telephone { get; set; }
+    public string Telephone { get; set; } = null!;
 
-    public string? Pesel { get; set; }
+    public string Pesel { get; set; } = null!;
 
     public virtual ICollection<ClientTrip> ClientTrips { get; set; } = new List<ClientTrip>();
 }
